@@ -1,0 +1,3054 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>HEROES ACADEMY — Helwan</title>
+  <meta name="description" content="HEROES ACADEMY — أكاديمية رياضات قتالية ولياقة بدنية في حلوان. بوكسينج، كيك بوكسينج، MMA، مصارعة وأكثر.">
+  <!-- Security headers: restrict the page to only load resources from domains it actually uses -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self';
+             script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
+             style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+             font-src https://fonts.gstatic.com;
+             img-src 'self' https: data:;
+             connect-src 'self' https://*.supabase.co;
+             frame-src https://www.facebook.com https://www.google.com;
+             base-uri 'self';
+             form-action 'self' https://wa.me;
+             frame-ancestors 'self';">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://i.postimg.cc">
+  <link rel="preconnect" href="https://cdn.phototourl.com">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #08090a;
+      --black-2: #111214;
+      --charcoal: #1b1c1f;
+      --charcoal-2: #242527;
+      --line: #2c2d30;
+      --red: #ff6a00;
+      --red-2: #cc5200;
+      --red-glow: #ff9a3d;
+      --off: #efeee9;
+      --off-dim: #a9a8a3;
+      --gray: #75767a;
+      --font-display: 'Cairo', sans-serif;
+      --font-body: 'Tajawal', sans-serif;
+      --ease: cubic-bezier(.16, .84, .32, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: #08090a;
+      scrollbar-color: var(--charcoal-2) var(--black);
+      scrollbar-width: thin;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--off);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+      opacity: 0;
+      transition: opacity .5s ease;
+    }
+
+    img.loaded,
+    img.no-fade {
+      opacity: 1;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: inherit;
+    }
+
+    input,
+    textarea,
+    select {
+      font-family: inherit;
+    }
+
+    ::selection {
+      background: var(--red);
+      color: #fff;
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--black);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--charcoal-2);
+      border-radius: 10px;
+      border: 2px solid var(--black);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--red);
+    }
+
+    .wrap {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    @media(max-width:700px) {
+      .wrap {
+        padding: 0 20px;
+      }
+    }
+
+    .eyebrow {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 12.5px;
+      letter-spacing: .22em;
+      color: var(--red-glow);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: '';
+      width: 26px;
+      height: 2px;
+      background: var(--red);
+      display: inline-block;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity .9s var(--ease), transform .9s var(--ease);
+    }
+
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-l {
+      opacity: 0;
+      transform: translateX(-48px);
+      transition: opacity .9s var(--ease), transform .9s var(--ease);
+    }
+
+    .reveal-l.in {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-r {
+      opacity: 0;
+      transform: translateX(48px);
+      transition: opacity .9s var(--ease), transform .9s var(--ease);
+    }
+
+    .reveal-r.in {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ============ NAV ============ */
+    header.nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 500;
+      padding: 26px 0;
+      transition: padding .4s var(--ease), background .4s var(--ease), border-color .4s var(--ease);
+      border-bottom: 1px solid transparent;
+    }
+
+    header.nav.scrolled {
+      padding: 14px 0;
+      background: rgba(8, 9, 10, .82);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 22px;
+      letter-spacing: .02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      height: 42px;
+      width: auto;
+      display: block;
+      transition: transform .3s var(--ease);
+    }
+
+    .logo:hover img {
+      transform: scale(1.04);
+    }
+
+    .logo .dot {
+      width: 9px;
+      height: 9px;
+      background: var(--red);
+      display: inline-block;
+      transform: rotate(45deg);
+      box-shadow: 0 0 14px var(--red-glow);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14.5px;
+      font-weight: 500;
+      color: var(--off-dim);
+      position: relative;
+      padding: 4px 0;
+      transition: color .3s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 0;
+      height: 1px;
+      background: var(--red);
+      transition: width .35s var(--ease);
+    }
+
+    .nav-links a:hover {
+      color: var(--off);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      font-size: 13.5px;
+      font-weight: 700;
+      padding: 12px 26px;
+      background: var(--red);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: .02em;
+      clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+    }
+
+    .nav-cta span {
+      position: relative;
+      z-index: 2;
+    }
+
+    .nav-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--off);
+      transform: translateY(101%);
+      transition: transform .4s var(--ease);
+    }
+
+    .nav-cta:hover::before {
+      transform: translateY(0);
+    }
+
+    .nav-cta:hover {
+      color: var(--black);
+    }
+
+    .nav-cta:hover span {
+      color: var(--black);
+    }
+
+    .burger {
+      display: none;
+      width: 40px;
+      height: 34px;
+      position: relative;
+      z-index: 600;
+    }
+
+    .burger span {
+      position: absolute;
+      right: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--off);
+      transition: all .35s var(--ease);
+    }
+
+    .burger span:nth-child(1) {
+      top: 6px;
+    }
+
+    .burger span:nth-child(2) {
+      top: 16px;
+      width: 70%;
+    }
+
+    .burger span:nth-child(3) {
+      top: 26px;
+      width: 40%;
+    }
+
+    .burger.open span:nth-child(1) {
+      transform: translateY(10px) rotate(45deg);
+      width: 100%;
+    }
+
+    .burger.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .burger.open span:nth-child(3) {
+      transform: translateY(-10px) rotate(-45deg);
+      width: 100%;
+    }
+
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      background: var(--black);
+      z-index: 550;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 32px;
+      transform: translateY(-100%);
+      transition: transform .55s var(--ease);
+    }
+
+    .mobile-menu.open {
+      transform: translateY(0);
+    }
+
+    .mobile-menu a {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 34px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+      color: var(--off);
+      opacity: 0;
+      transform: translateX(30px);
+      transition: opacity .5s var(--ease), transform .5s var(--ease);
+    }
+
+    .mobile-menu.open a {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .mobile-menu.open a:nth-child(1) {
+      transition-delay: .1s;
+    }
+
+    .mobile-menu.open a:nth-child(2) {
+      transition-delay: .16s;
+    }
+
+    .mobile-menu.open a:nth-child(3) {
+      transition-delay: .22s;
+    }
+
+    .mobile-menu.open a:nth-child(4) {
+      transition-delay: .28s;
+    }
+
+    .mobile-menu.open a:nth-child(5) {
+      transition-delay: .34s;
+    }
+
+    .mobile-menu.open a:nth-child(6) {
+      transition-delay: .4s;
+    }
+
+    .mobile-menu.open a:nth-child(7) {
+      transition-delay: .46s;
+    }
+
+    .mobile-menu .mm-cta {
+      margin-top: 26px;
+      border: none;
+      background: var(--red);
+      color: #fff;
+      text-align: center;
+      padding: 16px;
+      font-size: 16px;
+    }
+
+    @media(max-width:900px) {
+
+      .nav-links,
+      .nav-cta {
+        display: none;
+      }
+
+      .burger {
+        display: block;
+      }
+    }
+
+    /* ============ HERO ============ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .hero canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-veil {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 50% 30%, rgba(255, 106, 0, .18), transparent 60%),
+        linear-gradient(180deg, rgba(8, 9, 10, .35) 0%, rgba(8, 9, 10, .55) 55%, rgba(8, 9, 10, .98) 100%);
+      z-index: 2;
+    }
+
+    .hero-grain {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      opacity: .05;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 4;
+      padding: 0 32px 90px;
+      text-align: center;
+    }
+
+    .hero-tag {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 12.5px;
+      letter-spacing: .32em;
+      color: var(--off-dim);
+      text-transform: uppercase;
+      margin-bottom: 26px;
+      opacity: 0;
+      animation: fadeUp 1s var(--ease) .3s forwards;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(56px, 11vw, 168px);
+      line-height: .92;
+      letter-spacing: -.01em;
+      color: var(--off);
+      opacity: 0;
+      animation: fadeUp 1.2s var(--ease) .5s forwards;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--red);
+      position: relative;
+      text-shadow: 0 0 60px rgba(255, 106, 0, .5);
+    }
+
+    .hero-sub {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(15px, 2.4vw, 22px);
+      letter-spacing: .14em;
+      color: var(--off-dim);
+      margin-top: 22px;
+      opacity: 0;
+      animation: fadeUp 1.2s var(--ease) .75s forwards;
+    }
+
+    .hero-sub b {
+      color: var(--off);
+      font-weight: 700;
+    }
+
+    .hero-sub .sep {
+      color: var(--red);
+      margin: 0 10px;
+    }
+
+    .hero-cta-row {
+      margin-top: 46px;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 1.2s var(--ease) 1s forwards;
+    }
+
+    .btn-primary {
+      position: relative;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 18px 42px;
+      background: var(--red);
+      color: #fff;
+      overflow: hidden;
+      letter-spacing: .02em;
+      clip-path: polygon(6% 0, 100% 0, 94% 100%, 0 100%);
+      transition: transform .4s var(--ease);
+    }
+
+    .btn-primary span {
+      position: relative;
+      z-index: 2;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #fff;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform .45s var(--ease);
+    }
+
+    .btn-primary:hover::before {
+      transform: scaleX(1);
+    }
+
+    .btn-primary:hover {
+      color: var(--black);
+    }
+
+    .btn-primary:hover span {
+      color: var(--black);
+    }
+
+    .btn-primary:active {
+      transform: scale(.97);
+    }
+
+    .btn-ghost {
+      font-weight: 700;
+      font-size: 15px;
+      padding: 18px 38px;
+      border: 1px solid var(--line);
+      color: var(--off);
+      clip-path: polygon(6% 0, 100% 0, 94% 100%, 0 100%);
+      transition: border-color .3s, background .3s, transform .3s var(--ease);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--red);
+      background: rgba(255, 106, 0, .08);
+      transform: translateY(-3px);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(26px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ============ MARQUEE (glass strip) ============ */
+    .marquee-wrap {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      z-index: 5;
+    }
+
+    .marquee-strip {
+      position: relative;
+      overflow: hidden;
+      padding: 11px 0;
+      width: 100%;
+      background: rgba(255, 255, 255, .05);
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      border-top: 1px solid rgba(255, 255, 255, .08);
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .marquee-track {
+      display: flex;
+      white-space: nowrap;
+      animation: scrollX 14s linear infinite;
+    }
+
+    .marquee-track span {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(13px, 2.4vw, 17px);
+      color: #fff;
+      padding: 0 clamp(12px, 2.2vw, 22px);
+      display: inline-flex;
+      align-items: center;
+      gap: clamp(12px, 2.2vw, 22px);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .marquee-track span::after {
+      content: '/';
+      color: rgba(255, 255, 255, .35);
+      font-weight: 400;
+    }
+
+    @keyframes scrollX {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-25%);
+      }
+    }
+
+    /* ============ SECTION GENERIC ============ */
+    section {
+      position: relative;
+      padding: 150px 0;
+      scroll-margin-top: 90px;
+    }
+
+    @media(max-width:900px) {
+      section {
+        padding: 100px 0;
+        scroll-margin-top: 70px;
+      }
+    }
+
+    .section-head {
+      max-width: 720px;
+      margin-bottom: 70px;
+    }
+
+    .section-head h2 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(38px, 5.6vw, 68px);
+      line-height: 1;
+      margin-top: 16px;
+    }
+
+    .section-head h2 i {
+      font-style: normal;
+      color: var(--red);
+      text-shadow: 0 0 30px rgba(255, 106, 0, .35);
+    }
+
+    .section-head p {
+      margin-top: 20px;
+      color: var(--off-dim);
+      font-size: 16.5px;
+      line-height: 1.9;
+      max-width: 560px;
+    }
+
+    .diag-top {
+      clip-path: polygon(0 40px, 100% 0, 100% 100%, 0 100%);
+      margin-top: -40px;
+      padding-top: 190px;
+      position: relative;
+    }
+
+    @media(max-width:900px) {
+      .diag-top {
+        clip-path: polygon(0 22px, 100% 0, 100% 100%, 0 100%);
+        margin-top: -22px;
+        padding-top: 130px;
+      }
+    }
+
+    /* ============ ACADEMY INTRO ============ */
+    .academy {
+      background: var(--black-2);
+    }
+
+    .academy-grid {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 0;
+      align-items: center;
+    }
+
+    @media(max-width:900px) {
+      .academy-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+      }
+    }
+
+    .academy-media {
+      position: relative;
+    }
+
+    .academy-media .frame {
+      position: relative;
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%);
+    }
+
+    .academy-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 40px;
+      background: var(--charcoal);
+    }
+
+    .academy-media .frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(8, 9, 10, .75), transparent 45%);
+    }
+
+    .academy-media .tag-float {
+      position: absolute;
+      bottom: -28px;
+      right: -22px;
+      background: var(--red);
+      padding: 22px 30px;
+      clip-path: polygon(8% 0, 100% 0, 92% 100%, 0% 100%);
+      z-index: 3;
+    }
+
+    .academy-media .tag-float b {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 30px;
+      display: block;
+      color: #fff;
+    }
+
+    .academy-media .tag-float span {
+      font-size: 12px;
+      letter-spacing: .1em;
+      color: rgba(255, 255, 255, .85);
+    }
+
+    @media(max-width:900px) {
+      .academy-media .tag-float {
+        right: 0;
+        bottom: -22px;
+        padding: 16px 20px;
+      }
+
+      .academy-media .tag-float b {
+        font-size: 22px;
+      }
+    }
+
+    .academy-text {
+      padding-right: 70px;
+    }
+
+    @media(max-width:900px) {
+      .academy-text {
+        padding-right: 0;
+      }
+    }
+
+    .academy-text h2 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(36px, 5.2vw, 58px);
+      line-height: 1.06;
+      margin: 18px 0 26px;
+    }
+
+    .academy-text h2 i {
+      font-style: normal;
+      color: var(--red);
+    }
+
+    .academy-text p {
+      color: var(--off-dim);
+      font-size: 16.5px;
+      line-height: 2;
+      margin-bottom: 16px;
+      max-width: 520px;
+    }
+
+    .academy-stats {
+      display: flex;
+      gap: 0;
+      margin-top: 40px;
+      border-top: 1px solid var(--line);
+    }
+
+    .academy-stats div {
+      flex: 1;
+      padding: 22px 0;
+      border-left: 1px solid var(--line);
+    }
+
+    .academy-stats div:last-child {
+      border-left: none;
+    }
+
+    .academy-stats b {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 30px;
+      color: var(--red);
+      display: block;
+    }
+
+    .academy-stats span {
+      font-size: 12.5px;
+      color: var(--off-dim);
+      letter-spacing: .04em;
+    }
+
+    /* ============ COACHES ============ */
+    .coaches {
+      background: var(--black);
+    }
+
+    .coach-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+    }
+
+    @media(max-width:1000px) {
+      .coach-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media(max-width:520px) {
+      .coach-grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 16px;
+        margin: 0 -20px;
+        padding: 0 20px 10px;
+      }
+
+      .coach-grid::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    .coach-card {
+      position: relative;
+      background: var(--charcoal);
+      overflow: hidden;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      transition: border-color .4s, box-shadow .4s, transform .4s var(--ease);
+    }
+
+    .coach-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--red);
+      box-shadow: 0 18px 40px -14px rgba(255, 106, 0, .35);
+    }
+
+    @media(max-width:520px) {
+      .coach-card {
+        flex: 0 0 72%;
+        scroll-snap-align: start;
+      }
+    }
+
+    .coach-card.is-soon .coach-photo img {
+      filter: grayscale(.85) brightness(.5);
+    }
+
+    .coach-photo {
+      position: relative;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+    }
+
+    .coach-photo img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(.25) contrast(1.05);
+      transition: transform .7s var(--ease), filter .5s;
+    }
+
+    .coach-card:hover .coach-photo img {
+      transform: scale(1.06);
+      filter: grayscale(0) contrast(1.05);
+    }
+
+    .coach-body {
+      position: relative;
+      padding: 16px 18px 20px;
+      z-index: 2;
+    }
+
+    .coach-num {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 11px;
+      color: var(--red-glow);
+      letter-spacing: .1em;
+    }
+
+    .coach-name {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 18px;
+      margin-top: 6px;
+    }
+
+    .coach-sport {
+      font-size: 12.5px;
+      color: var(--red-glow);
+      font-weight: 700;
+      margin-top: 4px;
+      letter-spacing: .02em;
+    }
+
+    .coach-more {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .5s var(--ease), margin-top .5s var(--ease);
+    }
+
+    .coach-card:hover .coach-more {
+      max-height: 240px;
+      margin-top: 12px;
+    }
+
+    .coach-sched {
+      font-size: 12.5px;
+      color: var(--off-dim);
+      line-height: 1.8;
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+    }
+
+    .coach-sched b {
+      color: var(--off);
+      font-weight: 700;
+    }
+
+    .coach-price {
+      font-size: 12.5px;
+      color: var(--off);
+      margin-top: 6px;
+    }
+
+    .coach-price b {
+      color: var(--red-glow);
+    }
+
+    .coach-note {
+      font-size: 11px;
+      color: var(--gray);
+      margin-top: 8px;
+      line-height: 1.7;
+    }
+
+    /* ============ SPORTS GRID ============ */
+    .sports {
+      background: var(--black-2);
+    }
+
+    .sports-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sport-cell {
+      position: relative;
+      overflow: hidden;
+      background: var(--charcoal);
+      height: 280px;
+      width: 100%;
+    }
+
+    @media(max-width:640px) {
+      .sport-cell {
+        height: 220px;
+      }
+    }
+
+    .sport-cell img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(.55) brightness(.62);
+      transition: transform .8s var(--ease), filter .5s;
+    }
+
+    .sport-cell img.xfade {
+      animation: xfadeCycle 8s ease-in-out infinite;
+    }
+
+    .sport-cell img.xfade.b {
+      animation-delay: 4s;
+    }
+
+    @keyframes xfadeCycle {
+
+      0%,
+      42% {
+        opacity: 1;
+      }
+
+      50%,
+      92% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .sport-cell:hover img {
+      transform: scale(1.08);
+      filter: grayscale(0) brightness(.75);
+    }
+
+    .sport-cell::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(8, 9, 10, .9), transparent 60%);
+    }
+
+    .sport-cell .num {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      z-index: 2;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(255, 255, 255, .55);
+      letter-spacing: .05em;
+    }
+
+    .sport-cell .soon-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 3;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: .06em;
+      color: #fff;
+      background: var(--red);
+      padding: 6px 14px;
+      border-radius: 30px;
+    }
+
+    .sport-cell.is-soon img {
+      filter: grayscale(.85) brightness(.4);
+    }
+
+    .sport-cell .lbl {
+      position: absolute;
+      bottom: 16px;
+      right: 18px;
+      left: 14px;
+      z-index: 2;
+    }
+
+    .sport-cell .lbl b {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(18px, 1.8vw, 26px);
+      display: block;
+    }
+
+    .sport-cell .bar {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      height: 3px;
+      width: 0;
+      background: var(--red);
+      transition: width .5s var(--ease);
+      z-index: 2;
+    }
+
+    .sport-cell:hover .bar {
+      width: 100%;
+    }
+
+    /* ============ SCHEDULE ============ */
+    .schedule {
+      background: var(--black);
+    }
+
+    .sched-tools {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .sched-tools input,
+    .sched-tools select {
+      background: var(--charcoal);
+      border: 1px solid var(--line);
+      color: var(--off);
+      padding: 14px 18px;
+      font-size: 14px;
+      min-width: 180px;
+      flex: 1;
+    }
+
+    .sched-tools input:focus,
+    .sched-tools select:focus {
+      outline: none;
+      border-color: var(--red);
+    }
+
+    table.sched-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .sched-table thead th {
+      text-align: right;
+      font-size: 12px;
+      letter-spacing: .12em;
+      color: var(--red-glow);
+      text-transform: uppercase;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      font-weight: 700;
+    }
+
+    .sched-table tbody tr {
+      border-bottom: 1px solid var(--line);
+      transition: background .3s;
+      cursor: default;
+    }
+
+    .sched-table tbody tr:hover {
+      background: var(--charcoal);
+    }
+
+    .sched-table td {
+      padding: 20px 16px;
+      font-size: 14.5px;
+    }
+
+    .sched-table td.day {
+      font-weight: 700;
+      color: var(--off);
+    }
+
+    .sched-table td.sp {
+      color: var(--red-glow);
+      font-weight: 700;
+    }
+
+    .sched-table td.muted {
+      color: var(--off-dim);
+    }
+
+    @media(max-width:800px) {
+      table.sched-table thead {
+        display: none;
+      }
+
+      table.sched-table,
+      .sched-table tbody,
+      .sched-table tr,
+      .sched-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .sched-table tr {
+        background: var(--charcoal);
+        margin-bottom: 14px;
+        padding: 18px;
+        border-right: 3px solid var(--red);
+        border-bottom: none;
+      }
+
+      .sched-table td {
+        padding: 6px 0;
+        border: none;
+        font-size: 14px;
+      }
+
+      .sched-table td::before {
+        content: attr(data-lbl);
+        display: inline-block;
+        width: 90px;
+        color: var(--gray);
+        font-size: 11.5px;
+        letter-spacing: .05em;
+      }
+    }
+
+    .sched-empty {
+      padding: 40px 0;
+      text-align: center;
+      color: var(--off-dim);
+      display: none;
+    }
+
+    /* ============ ATHLETES GALLERY ============ */
+    .athletes {
+      background: var(--black-2);
+    }
+
+    .editorial-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media(max-width:1000px) {
+      .editorial-gallery {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media(max-width:640px) {
+      .editorial-gallery {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 14px;
+        margin: 0 -20px;
+        padding: 0 20px 10px;
+      }
+
+      .editorial-gallery::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    .editorial-gallery figure {
+      position: relative;
+      overflow: hidden;
+      margin: 0;
+      cursor: pointer;
+      background: var(--charcoal);
+      height: 320px;
+    }
+
+    @media(max-width:640px) {
+      .editorial-gallery figure {
+        flex: 0 0 78%;
+        scroll-snap-align: start;
+      }
+    }
+
+    .editorial-gallery figure img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(.3) contrast(1.05);
+      transition: transform .6s var(--ease), filter .4s;
+    }
+
+    .editorial-gallery figure:hover img {
+      transform: scale(1.07);
+      filter: grayscale(0);
+    }
+
+    .editorial-gallery figure::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 0 var(--red);
+      transition: box-shadow .4s;
+    }
+
+    .editorial-gallery figure:hover::after {
+      box-shadow: inset 0 0 0 3px var(--red);
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 4, 5, .96);
+      z-index: 900;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 86vh;
+      object-fit: contain;
+    }
+
+    .lightbox .close {
+      position: absolute;
+      top: 26px;
+      left: 26px;
+      font-size: 16px;
+      color: var(--off);
+      border: 1px solid var(--line);
+      padding: 10px 18px;
+    }
+
+    /* ============ ATHLETE VIDEO ============ */
+    .watch {
+      background: var(--black);
+    }
+
+    .watch-cap-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .watch-cap-top h3 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(22px, 3vw, 36px);
+    }
+
+    .watch-cap-top span {
+      font-size: 12.5px;
+      color: var(--off-dim);
+      letter-spacing: .06em;
+    }
+
+    .watch-frame {
+      position: relative;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid var(--line);
+      box-shadow: 0 0 0 1px rgba(255, 106, 0, .15), 0 30px 60px -20px rgba(0, 0, 0, .7);
+    }
+
+    .watch-frame::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(255, 106, 0, .12), transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .watch-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      z-index: 0;
+    }
+
+    /* ============ STORE ============ */
+    .store {
+      background: var(--black-2);
+    }
+
+    .store-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .store-soon {
+      padding: 80px 20px;
+      text-align: center;
+      border: 1px dashed var(--line);
+    }
+
+    .store-soon span {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(30px, 5vw, 52px);
+      color: var(--red-glow);
+      letter-spacing: .04em;
+    }
+
+    @media(max-width:980px) {
+      .store-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media(max-width:520px) {
+      .store-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .product {
+      background: var(--charcoal);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product .pimg {
+      position: relative;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+    }
+
+    .product .pimg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(.3) contrast(1.05);
+      transition: transform .6s var(--ease);
+    }
+
+    .product:hover .pimg img {
+      transform: scale(1.08);
+    }
+
+    .product .pbody {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .product .pcat {
+      font-size: 11px;
+      color: var(--red-glow);
+      letter-spacing: .1em;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .product .pname {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .product .pdesc {
+      font-size: 13px;
+      color: var(--off-dim);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .product .pfoot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+
+    .product .pprice {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 19px;
+      color: var(--off);
+    }
+
+    .product .pprice span {
+      font-size: 11px;
+      color: var(--gray);
+      font-weight: 400;
+    }
+
+    .add-btn {
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 10px 18px;
+      background: transparent;
+      border: 1px solid var(--red);
+      color: var(--red-glow);
+      transition: background .3s, color .3s;
+    }
+
+    .add-btn:hover {
+      background: var(--red);
+      color: #fff;
+    }
+
+    .add-btn.added {
+      background: var(--off);
+      border-color: var(--off);
+      color: var(--black);
+    }
+
+    /* store coming-soon banner */
+    .store-soon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 70px 30px;
+      border: 1px solid rgba(255, 59, 59, .35);
+      background: rgba(255, 59, 59, .05);
+      text-align: center;
+      flex-wrap: wrap;
+      animation: dangerGlow 2s ease-in-out infinite;
+    }
+
+    .store-soon p {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(16px, 2.6vw, 24px);
+      color: #ff5b5b;
+      letter-spacing: .01em;
+      text-shadow: 0 0 18px rgba(255, 59, 59, .45);
+      max-width: 620px;
+    }
+
+    /* form modal shared */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .7);
+      z-index: 900;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--black-2);
+      border: 1px solid var(--line);
+      max-width: 460px;
+      width: 100%;
+      padding: 38px 30px;
+      position: relative;
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+
+    .modal-box .mclose {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      font-size: 20px;
+      color: var(--off-dim);
+    }
+
+    .modal-box h3 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+
+    .modal-box p.sub {
+      color: var(--off-dim);
+      font-size: 13.5px;
+      margin-bottom: 22px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12.5px;
+      color: var(--off-dim);
+      margin-bottom: 7px;
+      letter-spacing: .02em;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      background: var(--charcoal);
+      border: 1px solid var(--line);
+      color: var(--off);
+      padding: 13px 15px;
+      font-size: 14.5px;
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      outline: none;
+      border-color: var(--red);
+    }
+
+    .modal-submit {
+      width: 100%;
+      padding: 16px;
+      background: var(--red);
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+      margin-top: 6px;
+      transition: background .3s;
+    }
+
+    .modal-submit:hover {
+      background: var(--red-2);
+    }
+
+    .confirm-box {
+      text-align: center;
+      padding: 20px 6px;
+    }
+
+    .confirm-box .ok {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .confirm-box .ok svg {
+      width: 26px;
+      height: 26px;
+      fill: #fff;
+    }
+
+    .confirm-box h3 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .confirm-box p {
+      color: var(--off-dim);
+      font-size: 14px;
+      line-height: 1.8;
+      margin-bottom: 22px;
+    }
+
+    /* ============ REGISTER CTA SECTION ============ */
+    .register {
+      background: var(--black);
+      position: relative;
+      text-align: center;
+    }
+
+    .register h2 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(42px, 7vw, 84px);
+    }
+
+    .register h2 i {
+      font-style: normal;
+      color: var(--red);
+    }
+
+    .register p {
+      color: var(--off-dim);
+      margin: 20px auto 40px;
+      max-width: 480px;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .btn-danger {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 22px;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 14px 30px;
+      background: rgba(255, 59, 59, .06);
+      color: #ff3b3b;
+      border: 1px solid rgba(255, 59, 59, .6);
+      border-radius: 40px;
+      transition: background .3s, border-color .3s;
+      animation: dangerGlow 2s ease-in-out infinite, dangerShake 4s ease-in-out infinite;
+    }
+
+    .btn-danger:hover {
+      background: rgba(255, 59, 59, .16);
+      border-color: #ff3b3b;
+    }
+
+    @keyframes dangerGlow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 8px rgba(255, 59, 59, .25);
+      }
+
+      50% {
+        box-shadow: 0 0 26px rgba(255, 59, 59, .65);
+      }
+    }
+
+    @keyframes dangerShake {
+
+      0%,
+      92%,
+      100% {
+        transform: translateX(0);
+      }
+
+      93% {
+        transform: translateX(-3px);
+      }
+
+      94% {
+        transform: translateX(3px);
+      }
+
+      95% {
+        transform: translateX(-3px);
+      }
+
+      96% {
+        transform: translateX(2px);
+      }
+
+      97% {
+        transform: translateX(0);
+      }
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ff3b3b;
+      display: inline-block;
+      position: relative;
+    }
+
+    .pulse-dot::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 1.5px solid #ff3b3b;
+      animation: pulseRing 1.6s ease-out infinite;
+    }
+
+    @keyframes pulseRing {
+      0% {
+        transform: scale(.5);
+        opacity: .9;
+      }
+
+      100% {
+        transform: scale(1.8);
+        opacity: 0;
+      }
+    }
+
+    /* ============ LOCATION / SOCIAL ============ */
+    .loc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+    }
+
+    @media(max-width:900px) {
+      .loc-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+    }
+
+    .loc-block h3 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 26px;
+      margin-bottom: 16px;
+    }
+
+    .loc-block p {
+      color: var(--off-dim);
+      line-height: 2;
+      font-size: 15px;
+      margin-bottom: 22px;
+    }
+
+    .map-embed {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/10;
+      margin-top: 24px;
+      border: 1px solid var(--line);
+      filter: grayscale(.15) contrast(1.05);
+      overflow: hidden;
+    }
+
+    .social-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .social-list a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 4px;
+      border-bottom: 1px solid var(--line);
+      font-weight: 700;
+      font-size: 16px;
+      transition: padding-right .3s var(--ease), color .3s;
+    }
+
+    .social-list a:hover {
+      padding-right: 14px;
+      color: var(--red-glow);
+    }
+
+    .social-list a span {
+      font-size: 12px;
+      color: var(--gray);
+      font-weight: 400;
+    }
+
+    /* ============ FOOTER ============ */
+    footer {
+      background: var(--charcoal);
+      padding: 80px 0 30px;
+      position: relative;
+    }
+
+    .foot-top {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 50px;
+      padding-bottom: 60px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .foot-brand h3 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 30px;
+    }
+
+    .foot-brand p {
+      color: var(--off-dim);
+      margin-top: 10px;
+      font-size: 14.5px;
+    }
+
+    .foot-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .foot-links a {
+      color: var(--off-dim);
+      font-size: 14.5px;
+      transition: color .3s;
+    }
+
+    .foot-links a:hover {
+      color: var(--red-glow);
+    }
+
+    .foot-bottom {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 26px;
+      font-size: 12.5px;
+      color: var(--gray);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .foot-credit {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 18px;
+      opacity: .55;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    .foot-credit span {
+      font-size: 12px;
+      letter-spacing: .03em;
+      color: var(--off-dim);
+      direction: ltr;
+    }
+
+    .foot-credit img {
+      height: 20px;
+      width: auto;
+      filter: grayscale(1) brightness(1.6);
+      opacity: .95;
+    }
+
+    /* toast */
+    .toast {
+      position: fixed;
+      bottom: 26px;
+      right: 26px;
+      background: var(--off);
+      color: var(--black);
+      padding: 14px 22px;
+      font-weight: 700;
+      font-size: 13.5px;
+      z-index: 950;
+      transform: translateY(140%);
+      transition: transform .45s var(--ease), opacity .45s var(--ease);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="siteNav">
+    <div class="wrap nav-inner">
+      <a href="#top" class="logo"><img src="https://i.postimg.cc/MKGzHdkR/IMG-20260831-WA0025.jpg" alt="Heroes Academy"></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#top">الرئيسية</a></li>
+          <li><a href="#academy">الأكاديمية</a></li>
+          <li><a href="#sports">الرياضات</a></li>
+          <li><a href="#coaches">الكباتن</a></li>
+          <li><a href="#schedule">المواعيد</a></li>
+          <li><a href="#store">المتجر</a></li>
+          <li><a href="#contact">تواصل معنا</a></li>
+        </ul>
+      </nav>
+      <a href="#register" class="nav-cta"><span>ابدأ تدريبك</span></a>
+      <button class="burger" id="burger" aria-label="القائمة"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#top">الرئيسية</a>
+    <a href="#academy">الأكاديمية</a>
+    <a href="#sports">الرياضات</a>
+    <a href="#coaches">الكباتن</a>
+    <a href="#schedule">المواعيد</a>
+    <a href="#store">المتجر</a>
+    <a href="#contact">تواصل معنا</a>
+    <a href="#register" class="mm-cta">ابدأ تدريبك</a>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="top">
+    <canvas id="heroCanvas"></canvas>
+    <div class="hero-veil"></div>
+    <div class="hero-grain"></div>
+    <div class="hero-content">
+      <div class="hero-tag">أكاديمية رياضات قتالية ولياقة بدنية — حلوان</div>
+      <h1>HEROES <em>ACADEMY</em></h1>
+      <div class="hero-sub"><b>قوة</b><span class="sep">—</span><b>انضباط</b><span class="sep">—</span><b>احتراف</b></div>
+      <div class="hero-cta-row">
+        <a href="#register" class="btn-primary"><span>ابدأ تدريبك الآن</span></a>
+        <a href="#coaches" class="btn-ghost">تعرف على الكباتن</a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ MARQUEE ============ -->
+  <div class="marquee-wrap">
+    <div class="marquee-strip strip-1">
+      <div class="marquee-track" id="marqueeWelcome"></div>
+    </div>
+  </div>
+
+  <!-- ============ ACADEMY INTRO ============ -->
+  <section class="academy diag-top" id="academy">
+    <div class="wrap academy-grid">
+      <div class="academy-media reveal-l">
+        <div class="frame">
+          <img src="https://i.postimg.cc/MKGzHdkR/IMG-20260831-WA0025.jpg" alt="HEROES ACADEMY" loading="lazy">
+        </div>
+        <div class="tag-float"><b>+٦</b><span>كباتن محترفين</span></div>
+      </div>
+      <div class="academy-text reveal-r">
+        <div class="eyebrow">من نحن</div>
+        <h2>هنا تبدأ <i>الرحلة</i></h2>
+        <p>HEROES ACADEMY في حلوان مساحة مخصصة لكل من يريد يبني جسم أقوى وعقل أكثر انضباطًا. مش مجرد صالة تدريب، دي بيئة حقيقية للرياضات القتالية واللياقة البدنية، بإشراف كباتن متخصصين وخطط تدريب واضحة لكل المستويات.</p>
+        <p>من أول حصتك التجريبية، هتحس إن كل تفصيلة في الأكاديمية اتحطت بهدف واحد: تطلع أقوى نسخة من نفسك.</p>
+        <div class="academy-stats">
+          <div><b>٩</b><span>رياضات وتخصصات</span></div>
+          <div><b>٦</b><span>كباتن محترفين</span></div>
+          <div><b>٧</b><span>أيام تدريب أسبوعيًا</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COACHES ============ -->
+  <section class="coaches" id="coaches">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">فريق التدريب</div>
+        <h2>كباتن <i>HEROES ACADEMY</i></h2>
+        <p>مجموعة من أقوى الكباتن في مجالاتهم، كل واحد فيهم بيقدملك خبرة حقيقية ومنهج تدريب مختلف.</p>
+      </div>
+      <div class="coach-grid" id="coachGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============ SPORTS ============ -->
+  <section class="sports" id="sports">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">التخصصات</div>
+        <h2>الرياضات <i>والتدريبات</i></h2>
+      </div>
+      <div class="sports-grid" id="sportsGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============ SCHEDULE ============ -->
+  <section class="schedule" id="schedule">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">المواعيد</div>
+        <h2>جدول <i>التدريبات</i></h2>
+        <p>دور على معادك المناسب بالرياضة، الكابتن، أو اليوم.</p>
+      </div>
+      <div class="sched-tools">
+        <input type="text" id="schedSearch" placeholder="ابحث بالرياضة، الكابتن، أو اليوم...">
+        <select id="schedFilterSport">
+          <option value="">كل الرياضات</option>
+        </select>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="sched-table">
+          <thead>
+            <tr>
+              <th>اليوم</th>
+              <th>الرياضة</th>
+              <th>الكابتن</th>
+              <th>الفئة</th>
+              <th>الوقت</th>
+            </tr>
+          </thead>
+          <tbody id="schedBody"></tbody>
+        </table>
+      </div>
+      <div class="sched-empty" id="schedEmpty">مفيش نتائج مطابقة لبحثك.</div>
+    </div>
+  </section>
+
+  <!-- ============ ATHLETES ============ -->
+  <section class="athletes" id="athletes">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">مجتمع الأكاديمية</div>
+        <h2>أبطال <i>هيروز</i></h2>
+      </div>
+      <div class="editorial-gallery" id="gallery"></div>
+    </div>
+  </section>
+
+  <!-- ============ WATCH ============ -->
+  <section class="watch" style="padding-top:70px;padding-bottom:70px;">
+    <div class="wrap">
+      <div class="watch-frame">
+        <iframe src="https://www.facebook.com/plugins/video.php?height=619&href=https%3A%2F%2Fwww.facebook.com%2Fwatch%2F%3Fv%3D931134619689904&show_text=false&width=1100&t=0&autoplay=true&mute=1" width="1100" height="619" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen="true" title="فيديو أبطال هيروز أثناء التدريب"></iframe>
+      </div>
+      <div class="watch-cap-top reveal" style="margin-top:26px;margin-bottom:0;">
+        <h3>شاهد أبطال هيروز أثناء التدريب</h3>
+        <span>مقطع من صفحتنا الرسمية على فيسبوك</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STORE ============ -->
+  <section class="store" id="store">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">المتجر</div>
+        <h2>متجر هيروز <i>الرياضي</i></h2>
+      </div>
+      <div class="store-soon reveal">
+        <span class="pulse-dot"></span>
+        <p>قريبًا سيتم توافر متجر لشراء جميع مستلزمات الرياضة الخاصة بـ HEROES ACADEMY</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REGISTER ============ -->
+  <section class="register" id="register">
+    <div class="wrap reveal">
+      <div class="eyebrow" style="justify-content:center;">انضم إلينا</div>
+      <h2>جاهز <i>تبدأ؟</i></h2>
+      <p>سجّل بياناتك وهنتواصل معاك لتأكيد حصتك الأولى.</p>
+      <button class="btn-primary" id="openRegister"><span>إرسال طلب التسجيل</span></button>
+      <div>
+        <a href="#" id="problemBtn" class="btn-danger"><span class="pulse-dot"></span><span>لو في مشكلة</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LOCATION / SOCIAL ============ -->
+  <section id="contact">
+    <div class="wrap loc-grid">
+      <div class="loc-block reveal-l">
+        <div class="eyebrow">موقعنا</div>
+        <h3 style="margin-top:16px;">HEROES ACADEMY</h3>
+        <p>٢١ شارع محمد سيد أحمد، تقاطع شارع جعفر، حلوان، بجوار مدخل النساجون الشرقيون</p>
+        <a href="https://maps.app.goo.gl/db6Q9beRPEXf1bXL8?g_st=ic" target="_blank" rel="noopener" class="btn-ghost">فتح الموقع على خرائط Google</a>
+        <div class="map-embed">
+          <iframe src="https://www.google.com/maps?q=%D9%A2%D9%A1%20%D8%B4%D8%A7%D8%B1%D8%B9%20%D9%85%D8%AD%D9%85%D8%AF%20%D8%B3%D9%8A%D8%AF%20%D8%A3%D8%AD%D9%85%D8%AF%D8%8C%20%D8%AD%D9%84%D9%88%D8%A7%D9%86%D8%8C%20%D8%A7%D9%84%D9%82%D8%A7%D9%87%D8%B1%D8%A9%D8%8C%20%D9%85%D8%B5%D8%B1&output=embed" width="100%" height="100%" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="موقع HEROES ACADEMY على الخريطة"></iframe>
+        </div>
+      </div>
+      <div class="loc-block reveal-r">
+        <div class="eyebrow">تواصل مع هيروز</div>
+        <div class="social-list" style="margin-top:16px;">
+          <a href="https://www.facebook.com/Heroes.Academy.Helwan" target="_blank" rel="noopener">فيسبوك <span>Facebook</span></a>
+          <a href="https://wa.me/201152301119" target="_blank" rel="noopener">واتساب <span>+20 11 5230 1119</span></a>
+          <a href="https://www.instagram.com/heroes_academyy?stkn=MXB6b21xMDdhMG5zcw==" target="_blank" rel="noopener">إنستجرام <span>Instagram</span></a>
+          <a href="https://www.tiktok.com/@nourboyka1?_r=1&_t=ZS-99UFhqk6rBP" target="_blank" rel="noopener">تيك توك <span>TikTok</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-top">
+        <div class="foot-brand">
+          <h3>HEROES ACADEMY</h3>
+          <p>قوة تبدأ من أول خطوة</p>
+        </div>
+        <div class="foot-links">
+          <a href="#top">الرئيسية</a>
+          <a href="#academy">الأكاديمية</a>
+          <a href="#sports">الرياضات</a>
+          <a href="#coaches">الكباتن</a>
+        </div>
+        <div class="foot-links">
+          <a href="#schedule">المواعيد</a>
+          <a href="#store">المتجر</a>
+          <a href="#contact">تواصل معنا</a>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© Heroes Academy — جميع الحقوق محفوظة</span>
+        <span>حلوان، القاهرة</span>
+      </div>
+      <div class="foot-credit">
+        <span>Website design by</span>
+        <img src="https://i.postimg.cc/8ktLSWcQ/G-STAR-LOGO.png" alt="GSTAR" loading="lazy">
+        <span>GSTAR</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ REGISTER MODAL ============ -->
+  <div class="modal-overlay" id="registerModal">
+    <div class="modal-box">
+      <button class="mclose" data-close>✕</button>
+      <h3>سجّل تدريبك</h3>
+      <p class="sub">هنبعت طلبك مباشرة واتساب لأكاديمية هيروز.</p>
+      <form id="registerForm">
+        <div class="field"><label>الاسم الكامل</label><input type="text" required id="rgName"></div>
+        <div class="field"><label>رقم الواتساب</label><input type="tel" required id="rgPhone" placeholder="01xxxxxxxxx"></div>
+        <div class="field"><label>كلمة المرور (لإنشاء حسابك)</label><input type="password" required id="rgPassword" minlength="6" placeholder="٦ أحرف على الأقل"></div>
+        <div class="field"><label>العمر</label><input type="number" required id="rgAge" min="4" max="80"></div>
+        <div class="field"><label>اختيار الرياضة</label><select id="rgSport" required></select></div>
+        <div class="field"><label>اختيار الكابتن</label><select id="rgCoach" required></select></div>
+        <div class="field"><label>اختيار نظام الاشتراك</label>
+          <select id="rgPlan" required>
+            <option value="8 حصص">٨ حصص</option>
+            <option value="12 حصة">١٢ حصة</option>
+            <option value="شهر واحد">اشتراك شهري</option>
+            <option value="حصة تجريبية">حصة تجريبية</option>
+          </select>
+        </div>
+        <div class="field"><label>ملاحظات إضافية</label><textarea id="rgNotes"></textarea></div>
+        <button type="submit" class="modal-submit">إرسال الطلب وإنشاء الحساب</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ PROBLEM REPORT MODAL ============ -->
+  <div class="modal-overlay" id="problemModal">
+    <div class="modal-box">
+      <button class="mclose" data-close>✕</button>
+      <h3>لو في مشكلة</h3>
+      <p class="sub">اكتب المشكلة وهنبعتها على طول لهيروز أكاديمي على واتساب.</p>
+      <form id="problemForm">
+        <div class="field"><label>سبب المشكلة</label><textarea id="pbReason" required placeholder="اكتب تفاصيل المشكلة هنا..."></textarea></div>
+        <button type="submit" class="modal-submit" style="background:#ff3b3b;">إرسال</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ CONFIRMATION MODAL ============ -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal-box">
+      <button class="mclose" data-close>✕</button>
+      <div class="confirm-box">
+        <h3 id="confirmTitle">تم تجهيز طلب الحجز المسبق</h3>
+        <p id="confirmText">سيتم التواصل معك لتأكيد الطلب وتفاصيل الاستلام.</p>
+        <button class="btn-primary" data-close><span id="confirmBtnLbl">العودة إلى المتجر</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <button class="close" id="lbClose">✕ إغلاق</button>
+    <img id="lbImg" src="" alt="">
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    /* ============================================================
+   DATA
+=============================================================== */
+    /* Fade images in once they finish loading (helps slow connections feel smoother) */
+    document.addEventListener('load', function(e) {
+      if (e.target && e.target.tagName === 'IMG') {
+        e.target.classList.add('loaded');
+      }
+    }, true);
+    // Catch any images already cached/complete
+    setInterval(function() {
+      document.querySelectorAll('img:not(.loaded)').forEach(function(img) {
+        if (img.complete && img.naturalWidth > 0) img.classList.add('loaded');
+      });
+    }, 400);
+
+    const WHATSAPP_NUMBER = "201152301119";
+
+    /* ============================================================
+       DATABASE (Supabase) — fill these in after setting up your project
+       See the setup guide for how to get these two values.
+    =============================================================== */
+    const SUPABASE_URL = "PASTE_YOUR_SUPABASE_URL_HERE";
+    const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
+
+    let supabaseClient = null;
+    try {
+      if (SUPABASE_URL.startsWith('http') && SUPABASE_ANON_KEY.length > 10) {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      }
+    } catch (err) {
+      console.warn('Supabase not configured yet:', err);
+    }
+
+    // Saves a row to the database silently — never blocks or breaks the WhatsApp flow if it fails
+    async function saveToDB(table, row) {
+      if (!supabaseClient) return; // not configured yet — safe no-op
+      try {
+        const {
+          error
+        } = await supabaseClient.from(table).insert(row);
+        if (error) console.warn(`Could not save to ${table}:`, error.message);
+      } catch (err) {
+        console.warn(`Could not save to ${table}:`, err);
+      }
+    }
+
+    const coaches = [{
+        name: "الكابتن أحمد فكري",
+        sport: "كيك بوكسينج",
+        big: true,
+        sched: "أطفال: أحد وجمعة ٦:٠٠ م، أربعاء ٥:٠٠ م — سيدات: أحد وجمعة ٧:٣٠ م، أربعاء ٦:٣٠ م — شباب: أحد وجمعة ٩:٠٠ م، أربعاء ٧:٣٠ م",
+        price: "أطفال: ١٢ حصة ٦٥٠ ج / ٨ حصص ٥٥٠ ج — كبار: ١٢ حصة ٧٠٠ ج / ٨ حصص ٦٠٠ ج",
+        note: "الحصة الأولى ١٠٠ جنيه وتخصم من الاشتراك عند التسجيل.",
+        img: "https://i.postimg.cc/j5LBXY2Q/91ca367d-94e7-4f89-9b03-818846689a44.jpg"
+      },
+      {
+        name: "الكابتن شعيب",
+        sport: "بوكسينج",
+        sched: "الأحد — الثلاثاء — الخميس، ٦:٠٠ مساءً",
+        price: "٨ حصص — ٥٥٠ ج · ١٢ حصة — ٦٥٠ ج",
+        note: "الحصة الأولى ١٠٠ جنيه وتخصم من الاشتراك.",
+        img: "https://i.postimg.cc/8ckJ3w8M/8d98dcd0-0e7c-4e91-9767-9e9418b5d329.jpg"
+      },
+      {
+        name: "الكابتن محمود تربو",
+        sport: "MMA",
+        sched: "السبت — الاثنين — الأربعاء، ٩:٠٠ مساءً",
+        price: "شهر — ٨٠٠ ج · شهرين — ١٣٥٠ ج · ٣ شهور — ١٨٥٠ ج",
+        note: "الحصة الأولى ١٠٠ جنيه وتخصم من الاشتراك عند التسجيل.",
+        img: "https://i.postimg.cc/TPDhm566/IMG-20260903-WA0026.jpg"
+      },
+      {
+        name: "الكابتن ديميانه",
+        sport: "كيك بوكسينج",
+        sched: "الأحد — الأربعاء — الجمعة، ٥:٠٠ مساءً",
+        price: "١٢ حصة — ٦٥٠ جنيه · ٨ حصص — ٥٥٠ جنيه",
+        note: "مناسب للمبتدئين والمحترفين لتحسين اللياقة البدنية وتعلم مهارات الكيك بوكسينج وزيادة القوة والتحمل.",
+        img: "https://i.postimg.cc/brTHmX0t/IMG-20260906-WA0000.jpg"
+      },
+      {
+        name: "الكابتن مؤمن الرفاعي",
+        sport: "MMA",
+        sched: "الثلاثاء — الجمعة، ١٠:٠٠ مساءً",
+        price: "٦٠٠ جنيه شهريًا",
+        note: "الحصة الأولى للتجربة متاحة.",
+        img: "https://i.postimg.cc/Nf3ypxjg/IMG-20260905-WA0021.jpg"
+      },
+      {
+        name: "الكابتن هناء راشد",
+        sport: "كاراتيه",
+        sched: "الخميس — السبت، ٧:٠٠ مساءً",
+        price: "٤٠٠ جنيه شهريًا",
+        note: "تدريبات كاراتيه لكل المستويات.",
+        img: "https://i.postimg.cc/3JnCK4ng/bb526347-87a8-4afa-a09a-4ac70f6020cd.jpg"
+      },
+      {
+        name: "الكابتن محمد عبد المحسن",
+        sport: "مصارعة",
+        sched: "الاثنين والأربعاء — أطفال ٦:٣٠–٩:٠٠ م، شباب ٩:٠٠–١١:٠٠ م",
+        price: "٤٠٠ جنيه شهريًا",
+        note: "الحصة الأولى ٥٠ جنيه وتخصم من الاشتراك.",
+        img: "https://i.postimg.cc/QdVkJyF8/IMG-20260906-WA0007.jpg"
+      },
+      {
+        name: "الكابتن أحمد يحيى",
+        sport: "كالستينكس",
+        sched: "الكبار: السبت — الاثنين — الأربعاء، ٦:٠٠ مساءً — الأطفال: السبت ٣:٣٠ م، الاثنين والأربعاء ٤:٣٠ م",
+        price: "الكبار: ٧٠٠ جنيه شهريًا — الأطفال: ٨ سيشن ٦٠٠ ج / ٤ سيشن شهريًا ٤٠٠ ج",
+        note: "تدريبات كالستينكس لكل الأعمار.",
+        img: "https://i.postimg.cc/pLpzFcTk/cf6241bc-3e83-4a78-b3b1-c4b0def04fc1.jpg"
+      },
+    ];
+
+    const sports = [{
+        name: "بوكسينج",
+        size: "l",
+        img: "https://i.postimg.cc/CxVrFmsQ/IMG-20260910-WA0054.jpg"
+      },
+      {
+        name: "كيك بوكسينج",
+        size: "s",
+        img: "https://i.postimg.cc/QtDNT6mz/IMG-20260903-WA0024.jpg"
+      },
+      {
+        name: "MMA",
+        size: "xl",
+        img: "https://i.postimg.cc/6pVQzJP4/IMG-20260905-WA0032.jpg",
+        img2: "https://i.postimg.cc/tR2RsNx7/IMG-20260903-WA0027.jpg"
+      },
+      {
+        name: "مصارعة",
+        size: "s",
+        img: "https://i.postimg.cc/4yJp7LCZ/IMG-20260906-WA0004.jpg"
+      },
+      {
+        name: "كاراتيه",
+        size: "s",
+        img: "https://i.postimg.cc/j59vBXjs/IMG-20260910-WA0046.jpg"
+      },
+      {
+        name: "كالستينكس",
+        size: "s",
+        img: "https://i.postimg.cc/pLpzFcTk/cf6241bc-3e83-4a78-b3b1-c4b0def04fc1.jpg"
+      },
+    ];
+
+    // Training schedule rows derived from coach data
+    const scheduleRows = [{
+        day: "الأحد",
+        sport: "كيك بوكسينج",
+        coach: "الكابتن ديميانه",
+        cat: "عام",
+        time: "٥:٠٠ م"
+      },
+      {
+        day: "الأربعاء",
+        sport: "كيك بوكسينج",
+        coach: "الكابتن ديميانه",
+        cat: "عام",
+        time: "٥:٠٠ م"
+      },
+      {
+        day: "الجمعة",
+        sport: "كيك بوكسينج",
+        coach: "الكابتن ديميانه",
+        cat: "عام",
+        time: "٥:٠٠ م"
+      },
+      {
+        day: "السبت",
+        sport: "MMA",
+        coach: "الكابتن محمود تربو",
+        cat: "عام",
+        time: "٩:٠٠ م"
+      },
+      {
+        day: "الاثنين",
+        sport: "MMA",
+        coach: "الكابتن محمود تربو",
+        cat: "عام",
+        time: "٩:٠٠ م"
+      },
+      {
+        day: "الأربعاء",
+        sport: "MMA",
+        coach: "الكابتن محمود تربو",
+        cat: "عام",
+        time: "٩:٠٠ م"
+      },
+      {
+        day: "الثلاثاء",
+        sport: "MMA",
+        coach: "الكابتن مؤمن الرفاعي",
+        cat: "عام",
+        time: "١٠:٠٠ م"
+      },
+      {
+        day: "الجمعة",
+        sport: "MMA",
+        coach: "الكابتن مؤمن الرفاعي",
+        cat: "عام",
+        time: "١٠:٠٠ م"
+      },
+      {
+        day: "الأحد",
+        sport: "كيك بوكسينج",
+        coach: "الكابتن أحمد فكري",
+        cat: "أطفال",
+        time: "٦:٠٠ م"
+      },
+      {
+        day: "الجمعة",
+        sport: "كيك بوكسينج",
+        coach: "الكابتن أحمد فكري",
+        cat: "أطفال",
+        time: "٦:٠٠ م"
+      },
+      {
+        day: "الأربعاء",
+        sport: "كيك بوكسينج",
+        coach: "الكابتن أحمد فكري",
+        cat: "أطفال",
+        time: "٥:٠٠ م"
+      },
+      {
+        day: "الأحد",
+        sport: "كيك بوكسينج",
+        coach: "الكابتن أحمد فكري",
+        cat: "سيدات",
+        time: "٧:٣٠ م"
+      },
+      {
+        day: "الجمعة",
+        sport: "كيك بوكسينج",
+        coach: "الكابتن أحمد فكري",
+        cat: "سيدات",
+        time: "٧:٣٠ م"
+      },
+      {
+        day: "الأربعاء",
+        sport: "كيك بوكسينج",
+        coach: "الكابتن أحمد فكري",
+        cat: "سيدات",
+        time: "٦:٣٠ م"
+      },
+      {
+        day: "الأحد",
+        sport: "كيك بوكسينج",
+        coach: "الكابتن أحمد فكري",
+        cat: "شباب",
+        time: "٩:٠٠ م"
+      },
+      {
+        day: "الجمعة",
+        sport: "كيك بوكسينج",
+        coach: "الكابتن أحمد فكري",
+        cat: "شباب",
+        time: "٩:٠٠ م"
+      },
+      {
+        day: "الأربعاء",
+        sport: "كيك بوكسينج",
+        coach: "الكابتن أحمد فكري",
+        cat: "شباب",
+        time: "٧:٣٠ م"
+      },
+      {
+        day: "الأحد",
+        sport: "بوكسينج",
+        coach: "الكابتن شعيب",
+        cat: "عام",
+        time: "٦:٠٠ م"
+      },
+      {
+        day: "الثلاثاء",
+        sport: "بوكسينج",
+        coach: "الكابتن شعيب",
+        cat: "عام",
+        time: "٦:٠٠ م"
+      },
+      {
+        day: "الخميس",
+        sport: "بوكسينج",
+        coach: "الكابتن شعيب",
+        cat: "عام",
+        time: "٦:٠٠ م"
+      },
+      {
+        day: "الاثنين",
+        sport: "مصارعة",
+        coach: "الكابتن محمد عبد المحسن",
+        cat: "أطفال",
+        time: "٦:٣٠–٩:٠٠ م"
+      },
+      {
+        day: "الأربعاء",
+        sport: "مصارعة",
+        coach: "الكابتن محمد عبد المحسن",
+        cat: "أطفال",
+        time: "٦:٣٠–٩:٠٠ م"
+      },
+      {
+        day: "الاثنين",
+        sport: "مصارعة",
+        coach: "الكابتن محمد عبد المحسن",
+        cat: "شباب",
+        time: "٩:٠٠–١١:٠٠ م"
+      },
+      {
+        day: "الأربعاء",
+        sport: "مصارعة",
+        coach: "الكابتن محمد عبد المحسن",
+        cat: "شباب",
+        time: "٩:٠٠–١١:٠٠ م"
+      },
+      {
+        day: "الخميس",
+        sport: "كاراتيه",
+        coach: "الكابتن هناء راشد",
+        cat: "عام",
+        time: "٧:٠٠ م"
+      },
+      {
+        day: "السبت",
+        sport: "كاراتيه",
+        coach: "الكابتن هناء راشد",
+        cat: "عام",
+        time: "٧:٠٠ م"
+      },
+      {
+        day: "السبت",
+        sport: "كالستينكس",
+        coach: "الكابتن أحمد يحيى",
+        cat: "كبار",
+        time: "٦:٠٠ م"
+      },
+      {
+        day: "الاثنين",
+        sport: "كالستينكس",
+        coach: "الكابتن أحمد يحيى",
+        cat: "كبار",
+        time: "٦:٠٠ م"
+      },
+      {
+        day: "الأربعاء",
+        sport: "كالستينكس",
+        coach: "الكابتن أحمد يحيى",
+        cat: "كبار",
+        time: "٦:٠٠ م"
+      },
+      {
+        day: "السبت",
+        sport: "كالستينكس",
+        coach: "الكابتن أحمد يحيى",
+        cat: "أطفال",
+        time: "٣:٣٠ م"
+      },
+      {
+        day: "الاثنين",
+        sport: "كالستينكس",
+        coach: "الكابتن أحمد يحيى",
+        cat: "أطفال",
+        time: "٤:٣٠ م"
+      },
+      {
+        day: "الأربعاء",
+        sport: "كالستينكس",
+        coach: "الكابتن أحمد يحيى",
+        cat: "أطفال",
+        time: "٤:٣٠ م"
+      },
+    ];
+
+    // Athlete gallery images
+    const galleryImgs = [
+      "https://i.postimg.cc/yNmcJDsj/e393fa49-2294-4a31-b169-812badd8b8df.jpg",
+      "https://i.postimg.cc/3NRvb9mk/5edf95a6-6bb9-45f2-a59a-48f6bf15796e.jpg",
+      "https://i.postimg.cc/sgpRbzVj/5c8af7de-2083-482b-85bc-dc4116a98fba.jpg",
+    ];
+
+    /* ============================================================
+       NAV
+    =============================================================== */
+    const siteNav = document.getElementById('siteNav');
+    window.addEventListener('scroll', () => {
+      siteNav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+    const burger = document.getElementById('burger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    document.querySelectorAll('.mobile-menu a').forEach(a => a.addEventListener('click', () => {
+      burger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }));
+
+    /* ============================================================
+       HERO CANVAS — cinematic ember / light field
+    =============================================================== */
+    (function() {
+      try {
+        const canvas = document.getElementById('heroCanvas');
+        const ctx = canvas ? canvas.getContext('2d') : null;
+        if (!canvas || !ctx) return; // canvas blocked/unsupported — skip the effect, rest of site still runs
+        let w, h, particles = [];
+
+        function resize() {
+          w = canvas.width = canvas.offsetWidth * devicePixelRatio;
+          h = canvas.height = canvas.offsetHeight * devicePixelRatio;
+        }
+
+        function initParticles() {
+          particles = [];
+          const count = Math.min(70, Math.floor((w * h) / 90000));
+          for (let i = 0; i < count; i++) {
+            particles.push({
+              x: Math.random() * w,
+              y: Math.random() * h,
+              r: Math.random() * 2.2 + .5,
+              vy: -(Math.random() * .35 + .08) * devicePixelRatio,
+              vx: (Math.random() - .5) * .12 * devicePixelRatio,
+              a: Math.random() * .5 + .15,
+              red: Math.random() > .45
+            });
+          }
+        }
+
+        function draw() {
+          try {
+            ctx.clearRect(0, 0, w, h);
+            // base vertical gradient
+            const g = ctx.createLinearGradient(0, 0, 0, h);
+            g.addColorStop(0, '#0c0d0f');
+            g.addColorStop(1, '#000');
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, w, h);
+            // moving red light sweep
+            const t = Date.now() / 6000;
+            const lx = w * 0.5 + Math.sin(t) * w * 0.28;
+            const rg = ctx.createRadialGradient(lx, h * 0.32, 0, lx, h * 0.32, h * 0.55);
+            rg.addColorStop(0, 'rgba(255,106,0,.16)');
+            rg.addColorStop(1, 'rgba(255,106,0,0)');
+            ctx.fillStyle = rg;
+            ctx.fillRect(0, 0, w, h);
+
+            particles.forEach(p => {
+              p.y += p.vy;
+              p.x += p.vx;
+              if (p.y < -10) {
+                p.y = h + 10;
+                p.x = Math.random() * w;
+              }
+              ctx.beginPath();
+              ctx.fillStyle = p.red ? `rgba(255,138,26,${p.a})` : `rgba(230,225,220,${p.a*0.5})`;
+              ctx.arc(p.x, p.y, p.r * devicePixelRatio, 0, Math.PI * 2);
+              ctx.fill();
+            });
+            requestAnimationFrame(draw);
+          } catch (err) {
+            console.warn('Hero canvas draw stopped:', err);
+          }
+        }
+
+        function setup() {
+          resize();
+          initParticles();
+        }
+        window.addEventListener('resize', setup);
+        setup();
+        draw();
+      } catch (err) {
+        console.warn('Hero canvas unavailable, skipping effect:', err);
+      }
+    })();
+
+    /* ============================================================
+       MARQUEE
+    =============================================================== */
+    (function() {
+      const track = document.getElementById('marqueeWelcome');
+      const item = '<span>WELCOME TO HEROES ACADEMY</span>';
+      track.innerHTML = item.repeat(8);
+    })();
+
+    /* ============================================================
+       COACHES RENDER
+    =============================================================== */
+    (function() {
+      const grid = document.getElementById('coachGrid');
+      grid.innerHTML = coaches.map((c, i) => `
+    <div class="coach-card${c.soon ? ' is-soon' : ''}">
+      <div class="coach-photo"><img src="${c.img}" alt="${c.name}" loading="lazy"></div>
+      ${c.soon ? `<div class="soon-badge">قريبًا</div>` : ''}
+      <div class="coach-body">
+        <div class="coach-num">٠${i+1}</div>
+        <div class="coach-name">${c.name}</div>
+        <div class="coach-sport">${c.sport}</div>
+        <div class="coach-more">
+          <div class="coach-sched"><b>المواعيد:</b> ${c.sched}</div>
+          <div class="coach-price"><b>${c.price}</b></div>
+          <div class="coach-note">${c.note}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+    })();
+
+    /* ============================================================
+       SPORTS RENDER
+    =============================================================== */
+    (function() {
+      const grid = document.getElementById('sportsGrid');
+      grid.innerHTML = sports.map((s, i) => `
+    <div class="sport-cell${s.soon ? ' is-soon' : ''}">
+      <div class="num">٠${i+1}</div>
+      ${s.img2
+        ? `<img class="xfade a" src="${s.img}" alt="${s.name}" loading="lazy">
+           <img class="xfade b" src="${s.img2}" alt="${s.name}" loading="lazy">`
+        : `<img src="${s.img}" alt="${s.name}" loading="lazy">`}
+      ${s.soon ? `<div class="soon-badge">قريبًا</div>` : ''}
+      <div class="lbl"><b>${s.name}</b></div>
+      <div class="bar"></div>
+    </div>
+  `).join('');
+    })();
+
+    /* ============================================================
+       SCHEDULE RENDER + FILTER
+    =============================================================== */
+    (function() {
+      const body = document.getElementById('schedBody');
+      const search = document.getElementById('schedSearch');
+      const sportSel = document.getElementById('schedFilterSport');
+      const empty = document.getElementById('schedEmpty');
+
+      const uniqueSports = [...new Set(scheduleRows.map(r => r.sport))];
+      sportSel.innerHTML += uniqueSports.map(s => `<option value="${s}">${s}</option>`).join('');
+
+      function render() {
+        const q = search.value.trim();
+        const sp = sportSel.value;
+        const rows = scheduleRows.filter(r => {
+          const matchQ = !q || [r.day, r.sport, r.coach, r.cat].some(v => v.includes(q));
+          const matchSp = !sp || r.sport === sp;
+          return matchQ && matchSp;
+        });
+        body.innerHTML = rows.map(r => `
+      <tr>
+        <td class="day" data-lbl="اليوم">${r.day}</td>
+        <td class="sp" data-lbl="الرياضة">${r.sport}</td>
+        <td data-lbl="الكابتن">${r.coach}</td>
+        <td class="muted" data-lbl="الفئة">${r.cat}</td>
+        <td class="muted" data-lbl="الوقت">${r.time}</td>
+      </tr>
+    `).join('');
+        empty.style.display = rows.length ? 'none' : 'block';
+      }
+      search.addEventListener('input', render);
+      sportSel.addEventListener('change', render);
+      render();
+    })();
+
+    /* ============================================================
+       GALLERY + LIGHTBOX
+    =============================================================== */
+    (function() {
+      const gallery = document.getElementById('gallery');
+      gallery.innerHTML = galleryImgs.map(src => `<figure><img src="${src}" loading="lazy" alt="بطل HEROES ACADEMY"></figure>`).join('');
+      const lightbox = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lbImg');
+      gallery.querySelectorAll('figure img').forEach(img => {
+        img.addEventListener('click', () => {
+          lbImg.src = img.src;
+          lightbox.classList.add('open');
+        });
+      });
+      document.getElementById('lbClose').addEventListener('click', () => lightbox.classList.remove('open'));
+      lightbox.addEventListener('click', e => {
+        if (e.target === lightbox) lightbox.classList.remove('open');
+      });
+    })();
+
+    /* ============================================================
+       MODALS (generic open/close)
+    =============================================================== */
+    function openModal(el) {
+      el.classList.add('open');
+    }
+
+    function closeModal(el) {
+      el.classList.remove('open');
+    }
+    document.querySelectorAll('[data-close]').forEach(btn => {
+      btn.addEventListener('click', e => {
+        closeModal(e.target.closest('.modal-overlay'));
+      });
+    });
+    document.querySelectorAll('.modal-overlay').forEach(ov => {
+      ov.addEventListener('click', e => {
+        if (e.target === ov) closeModal(ov);
+      });
+    });
+
+    /* ============================================================
+       REGISTER MODAL
+    =============================================================== */
+    const registerModal = document.getElementById('registerModal');
+    const problemModal = document.getElementById('problemModal');
+
+    document.getElementById('problemBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal(problemModal);
+    });
+
+    document.getElementById('problemForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const reason = document.getElementById('pbReason').value.trim();
+      const NL = String.fromCharCode(10);
+      const msg = encodeURIComponent(`في مشكلة محتاج مساعدة فيها بخصوص هيروز أكاديمي.${NL}${NL}سبب المشكلة: ${reason}`);
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
+      saveToDB('problem_reports', {
+        reason
+      });
+      closeModal(problemModal);
+      this.reset();
+    });
+
+    document.getElementById('openRegister').addEventListener('click', () => {
+      const sportSel = document.getElementById('rgSport');
+      const coachSel = document.getElementById('rgCoach');
+      if (!sportSel.options.length) {
+        sportSel.innerHTML = sports.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
+        coachSel.innerHTML = coaches.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+      }
+      openModal(registerModal);
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const name = document.getElementById('rgName').value.trim();
+      const phone = document.getElementById('rgPhone').value.trim();
+      const password = document.getElementById('rgPassword').value;
+      const age = document.getElementById('rgAge').value.trim();
+      const sport = document.getElementById('rgSport').value;
+      const coach = document.getElementById('rgCoach').value;
+      const plan = document.getElementById('rgPlan').value;
+      const notes = document.getElementById('rgNotes').value.trim();
+
+      let lines = [];
+      lines.push('طلب تسجيل تدريب جديد — HEROES ACADEMY');
+      lines.push('');
+      lines.push(`الاسم الكامل: ${name}`);
+      lines.push(`رقم الهاتف: ${phone}`);
+      lines.push(`العمر: ${age}`);
+      lines.push(`الرياضة: ${sport}`);
+      lines.push(`الكابتن: ${coach}`);
+      lines.push(`نظام الاشتراك: ${plan}`);
+      if (notes) lines.push(`ملاحظات: ${notes}`);
+
+      const msg = encodeURIComponent(lines.join(String.fromCharCode(10)));
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
+
+      saveToDB('registrations', {
+        full_name: name,
+        phone: phone,
+        age: age ? parseInt(age, 10) : null,
+        sport: sport,
+        coach: coach,
+        plan: plan,
+        notes: notes || null
+      });
+
+      // Create a real, securely-stored account (password handled entirely by Supabase Auth)
+      if (supabaseClient) {
+        const cleanPhone = phone.replace(/[^0-9]/g, '');
+        const pseudoEmail = `${cleanPhone}@heroesacademy.customer`;
+        try {
+          await supabaseClient.auth.signUp({
+            email: pseudoEmail,
+            password: password,
+            options: {
+              data: {
+                full_name: name,
+                phone: phone
+              }
+            }
+          });
+        } catch (err) {
+          console.warn('Account creation skipped:', err);
+        }
+      }
+
+      closeModal(registerModal);
+      document.getElementById('confirmTitle').textContent = 'تم إرسال طلب التسجيل';
+      document.getElementById('confirmText').textContent = 'سيتم التواصل معك قريبًا لتأكيد التسجيل وموعد أول حصة.';
+      document.getElementById('confirmBtnLbl').textContent = 'تمام';
+      openModal(document.getElementById('confirmModal'));
+      this.reset();
+    });
+
+    /* ============================================================
+       TOAST
+    =============================================================== */
+    let toastTimer;
+
+    function showToast(text) {
+      const t = document.getElementById('toast');
+      t.textContent = text;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    /* ============================================================
+       SCROLL REVEAL
+    =============================================================== */
+    (function() {
+      const els = document.querySelectorAll('.reveal, .reveal-l, .reveal-r');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(el => el.classList.add('in'));
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(en => {
+          if (en.isIntersecting) {
+            en.target.classList.add('in');
+            io.unobserve(en.target);
+          }
+        });
+      }, {
+        threshold: .15
+      });
+      els.forEach(el => io.observe(el));
+    })();
+  </script>
+</body>
+</html>
