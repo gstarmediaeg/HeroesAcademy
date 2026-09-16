@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>HEROES ACADEMY — Helwan</title>
   <meta name="description" content="HEROES ACADEMY — أكاديمية رياضات قتالية ولياقة بدنية في حلوان. بوكسينج، كيك بوكسينج، MMA، مصارعة وأكثر.">
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/L5JMzw83/tsmym-bdwn-ʿnwan-20260908-225024-0000.png">
+  <link rel="apple-touch-icon" href="https://i.postimg.cc/L5JMzw83/tsmym-bdwn-ʿnwan-20260908-225024-0000.png">
   <!-- Security headers: restrict the page to only load resources from domains it actually uses -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self';
              script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
@@ -2261,7 +2263,6 @@
       <form id="registerForm">
         <div class="field"><label>الاسم الكامل</label><input type="text" required id="rgName"></div>
         <div class="field"><label>رقم الواتساب</label><input type="tel" required id="rgPhone" placeholder="01xxxxxxxxx"></div>
-        <div class="field"><label>كلمة المرور (لإنشاء حسابك)</label><input type="password" required id="rgPassword" minlength="6" placeholder="٦ أحرف على الأقل"></div>
         <div class="field"><label>العمر</label><input type="number" required id="rgAge" min="4" max="80"></div>
         <div class="field"><label>اختيار الرياضة</label><select id="rgSport" required></select></div>
         <div class="field"><label>اختيار الكابتن</label><select id="rgCoach" required></select></div>
@@ -2269,12 +2270,13 @@
           <select id="rgPlan" required>
             <option value="8 حصص">٨ حصص</option>
             <option value="12 حصة">١٢ حصة</option>
-            <option value="شهر واحد">اشتراك شهري</option>
-            <option value="حصة تجريبية">حصة تجريبية</option>
+            <option value="اشتراك شهري">اشتراك شهري</option>
+            <option value="اشتراك سنوي">اشتراك سنوي</option>
+            <option value="تدريب خاص">تدريب خاص</option>
           </select>
         </div>
         <div class="field"><label>ملاحظات إضافية</label><textarea id="rgNotes"></textarea></div>
-        <button type="submit" class="modal-submit">إرسال الطلب وإنشاء الحساب</button>
+        <button type="submit" class="modal-submit">إرسال طلب التسجيل</button>
       </form>
     </div>
   </div>
@@ -2947,16 +2949,26 @@
       const coachSel = document.getElementById('rgCoach');
       if (!sportSel.options.length) {
         sportSel.innerHTML = sports.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
-        coachSel.innerHTML = coaches.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
       }
+      updateCoachOptions(sportSel.value);
       openModal(registerModal);
+    });
+
+    function updateCoachOptions(selectedSport) {
+      const coachSel = document.getElementById('rgCoach');
+      const matching = coaches.filter(c => c.sport === selectedSport);
+      const list = matching.length ? matching : coaches;
+      coachSel.innerHTML = list.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+    }
+
+    document.getElementById('rgSport').addEventListener('change', (e) => {
+      updateCoachOptions(e.target.value);
     });
 
     document.getElementById('registerForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       const name = document.getElementById('rgName').value.trim();
       const phone = document.getElementById('rgPhone').value.trim();
-      const password = document.getElementById('rgPassword').value;
       const age = document.getElementById('rgAge').value.trim();
       const sport = document.getElementById('rgSport').value;
       const coach = document.getElementById('rgCoach').value;
@@ -2986,26 +2998,6 @@
         plan: plan,
         notes: notes || null
       });
-
-      // Create a real, securely-stored account (password handled entirely by Supabase Auth)
-      if (supabaseClient) {
-        const cleanPhone = phone.replace(/[^0-9]/g, '');
-        const pseudoEmail = `${cleanPhone}@heroesacademy.customer`;
-        try {
-          await supabaseClient.auth.signUp({
-            email: pseudoEmail,
-            password: password,
-            options: {
-              data: {
-                full_name: name,
-                phone: phone
-              }
-            }
-          });
-        } catch (err) {
-          console.warn('Account creation skipped:', err);
-        }
-      }
 
       closeModal(registerModal);
       document.getElementById('confirmTitle').textContent = 'تم إرسال طلب التسجيل';
