@@ -1359,9 +1359,11 @@
       background: rgba(4, 4, 5, .96);
       z-index: 900;
       display: none;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 30px;
+      overflow-y: auto;
     }
 
     .lightbox.open {
@@ -1369,19 +1371,62 @@
     }
 
     .lightbox img {
-      max-width: 90vw;
-      max-height: 86vh;
+      max-width: min(80vw, 420px);
+      max-height: min(50vh, calc(100vh - 220px));
       object-fit: contain;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .lightbox-cap {
+      margin-top: 18px;
+      text-align: center;
+      display: none;
+      flex-shrink: 0;
+      background: var(--charcoal);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 14px 26px;
+      max-width: 90vw;
+    }
+
+    .lightbox-cap.show {
+      display: block;
+    }
+
+    .lightbox-cap-name {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(18px, 3vw, 26px);
+      color: var(--off);
+    }
+
+    .lightbox-cap-sport {
+      margin-top: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--off-dim);
+    }
+
+    .lightbox-cap-title {
+      margin-top: 8px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--red-glow);
+      letter-spacing: .03em;
     }
 
     .lightbox .close {
-      position: absolute;
+      position: fixed;
       top: 26px;
       left: 26px;
       font-size: 16px;
       color: var(--off);
       border: 1px solid var(--line);
       padding: 10px 18px;
+      background: rgba(8, 9, 10, .8);
+      backdrop-filter: blur(6px);
+      z-index: 2;
     }
 
     /* ============ ATHLETE VIDEO ============ */
@@ -2313,6 +2358,11 @@
   <div class="lightbox" id="lightbox">
     <button class="close" id="lbClose">✕ إغلاق</button>
     <img id="lbImg" src="" alt="">
+    <div class="lightbox-cap" id="lbCap">
+      <div class="lightbox-cap-name" id="lbName"></div>
+      <div class="lightbox-cap-sport" id="lbSport"></div>
+      <div class="lightbox-cap-title" id="lbTitle"></div>
+    </div>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -2694,9 +2744,10 @@
 
     // Athlete gallery images
     const galleryImgs = [
-      "https://i.postimg.cc/yNmcJDsj/e393fa49-2294-4a31-b169-812badd8b8df.jpg",
-      "https://i.postimg.cc/3NRvb9mk/5edf95a6-6bb9-45f2-a59a-48f6bf15796e.jpg",
-      "https://i.postimg.cc/sgpRbzVj/5c8af7de-2083-482b-85bc-dc4116a98fba.jpg",
+      { img: "https://i.postimg.cc/sf6sztcB/IMG-20260917-WA0028.jpg", name: "سيف محمد فاروق", sport: "كاراتيه", title: "بطل القاهرة والجمهورية" },
+      { img: "https://i.postimg.cc/fR44TZ0W/IMG-20260917-WA0026.jpg", name: "بلال وطه", sport: "كاراتيه", title: "أبطال القاهرة والجمهورية" },
+      { img: "https://i.postimg.cc/2jJM2mGt/IMG-20260917-WA0024.jpg", name: "أحمد", sport: "كاراتيه", title: "بطل الجمهورية" },
+      { img: "https://i.postimg.cc/pd26pdW6/IMG-20260917-WA0023.jpg", name: "آية نبيل", sport: "كاراتيه", title: "بطلة بحر المتوسط" },
     ];
 
     /* ============================================================
@@ -2888,12 +2939,25 @@
     =============================================================== */
     (function() {
       const gallery = document.getElementById('gallery');
-      gallery.innerHTML = galleryImgs.map(src => `<figure><img src="${src}" loading="lazy" alt="بطل HEROES ACADEMY"></figure>`).join('');
+      gallery.innerHTML = galleryImgs.map((g, i) => `<figure data-idx="${i}"><img src="${g.img}" loading="lazy" alt="${g.name} — ${g.sport} — ${g.title}"></figure>`).join('');
       const lightbox = document.getElementById('lightbox');
       const lbImg = document.getElementById('lbImg');
-      gallery.querySelectorAll('figure img').forEach(img => {
-        img.addEventListener('click', () => {
-          lbImg.src = img.src;
+      const lbCap = document.getElementById('lbCap');
+      const lbName = document.getElementById('lbName');
+      const lbSport = document.getElementById('lbSport');
+      const lbTitle = document.getElementById('lbTitle');
+      gallery.querySelectorAll('figure').forEach(fig => {
+        fig.querySelector('img').addEventListener('click', () => {
+          const g = galleryImgs[parseInt(fig.dataset.idx, 10)];
+          lbImg.src = g.img;
+          if (g.name) {
+            lbName.textContent = g.name;
+            lbSport.textContent = g.sport || '';
+            lbTitle.textContent = g.title || '';
+            lbCap.classList.add('show');
+          } else {
+            lbCap.classList.remove('show');
+          }
           lightbox.classList.add('open');
         });
       });
