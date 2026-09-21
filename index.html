@@ -1284,60 +1284,50 @@
     }
 
     .editorial-gallery {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      columns: 4 220px;
+      column-gap: 16px;
     }
 
     @media(max-width:1000px) {
       .editorial-gallery {
-        grid-template-columns: repeat(2, 1fr);
+        columns: 3 180px;
       }
     }
 
     @media(max-width:640px) {
       .editorial-gallery {
-        display: flex;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        gap: 14px;
-        margin: 0 -20px;
-        padding: 0 20px 10px;
-      }
-
-      .editorial-gallery::-webkit-scrollbar {
-        display: none;
+        columns: 2 140px;
+        column-gap: 10px;
       }
     }
 
     .editorial-gallery figure {
       position: relative;
       overflow: hidden;
-      margin: 0;
+      margin: 0 0 16px;
+      break-inside: avoid;
       cursor: pointer;
       background: var(--charcoal);
-      height: 320px;
+      border-radius: 4px;
     }
 
     @media(max-width:640px) {
       .editorial-gallery figure {
-        flex: 0 0 78%;
-        scroll-snap-align: start;
+        margin: 0 0 10px;
       }
     }
 
     .editorial-gallery figure img {
-      position: absolute;
-      inset: 0;
+      display: block;
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
+      object-fit: contain;
       filter: grayscale(.3) contrast(1.05);
       transition: transform .6s var(--ease), filter .4s;
     }
 
     .editorial-gallery figure:hover img {
-      transform: scale(1.07);
+      transform: scale(1.05);
       filter: grayscale(0);
     }
 
@@ -1347,6 +1337,7 @@
       inset: 0;
       box-shadow: inset 0 0 0 0 var(--red);
       transition: box-shadow .4s;
+      pointer-events: none;
     }
 
     .editorial-gallery figure:hover::after {
@@ -2748,6 +2739,25 @@
       { img: "https://i.postimg.cc/fR44TZ0W/IMG-20260917-WA0026.jpg", name: "بلال وطه", sport: "كاراتيه", title: "أبطال القاهرة والجمهورية" },
       { img: "https://i.postimg.cc/2jJM2mGt/IMG-20260917-WA0024.jpg", name: "أحمد", sport: "كاراتيه", title: "بطل الجمهورية" },
       { img: "https://i.postimg.cc/pd26pdW6/IMG-20260917-WA0023.jpg", name: "آية نبيل", sport: "كاراتيه", title: "بطلة بحر المتوسط" },
+      { img: "https://i.postimg.cc/wv4wPqcP/IMG-20260920-WA0033.jpg" },
+      { img: "https://i.postimg.cc/WzD5cBXC/IMG-20260920-WA0034.jpg" },
+      { img: "https://i.postimg.cc/G2gXNLJX/IMG-20260920-WA0036.jpg" },
+      { img: "https://i.postimg.cc/nzS35FYG/IMG-20260920-WA0037.jpg" },
+      { img: "https://i.postimg.cc/C1rcthH8/IMG-20260920-WA0038.jpg" },
+      { img: "https://i.postimg.cc/gJ2MNXRR/IMG-20260920-WA0041.jpg" },
+      { img: "https://i.postimg.cc/Kzp0VGr1/IMG-20260920-WA0042.jpg" },
+      { img: "https://i.postimg.cc/d1VW4kdD/IMG-20260920-WA0043.jpg" },
+      { img: "https://i.postimg.cc/C1xvmBDS/IMG-20260920-WA0048.jpg" },
+      { img: "https://i.postimg.cc/d0BH2m7F/IMG-20260920-WA0051.jpg" },
+      { img: "https://i.postimg.cc/5t37BqXR/IMG-20260920-WA0052.jpg" },
+      { img: "https://i.postimg.cc/jjXgHQDH/IMG-20260920-WA0053.jpg" },
+      { img: "https://i.postimg.cc/9QyNMjC0/IMG-20260920-WA0055.jpg" },
+      { img: "https://i.postimg.cc/5t1KQk2n/IMG-20260920-WA0056.jpg" },
+      { img: "https://i.postimg.cc/W10f3PTb/IMG-20260920-WA0057.jpg" },
+      { img: "https://i.postimg.cc/q70D6ZvN/IMG-20260920-WA0058.jpg" },
+      { img: "https://i.postimg.cc/htV3jqcS/IMG-20260920-WA0061.jpg" },
+      { img: "https://i.postimg.cc/tCZMKxch/IMG-20260920-WA0066.jpg" },
+      { img: "https://i.postimg.cc/bw1FJjps/IMG-20260920-WA0068.jpg" },
     ];
 
     /* ============================================================
@@ -2939,7 +2949,7 @@
     =============================================================== */
     (function() {
       const gallery = document.getElementById('gallery');
-      gallery.innerHTML = galleryImgs.map((g, i) => `<figure data-idx="${i}"><img src="${g.img}" loading="lazy" alt="${g.name} — ${g.sport} — ${g.title}"></figure>`).join('');
+      gallery.innerHTML = galleryImgs.map((g, i) => `<figure data-idx="${i}"><img src="${g.img}" loading="lazy" alt="${g.name ? g.name + ' — ' + g.sport + ' — ' + g.title : 'بطل HEROES ACADEMY'}"></figure>`).join('');
       const lightbox = document.getElementById('lightbox');
       const lbImg = document.getElementById('lbImg');
       const lbCap = document.getElementById('lbCap');
